@@ -19,4 +19,38 @@ function getPlayerSelection(){
   }
   return userSelection;
 }
-getPlayerSelection();
+
+function playRound(computerMove, userMove){
+  //plays a round.
+  //compares computer move to user move
+  //only care if player wins of if its a tie
+  //check tie first then move to winning conditions
+  //so if player has rock see if computer has scissors
+  //if player has paper see if computer has rock
+  //if player has scissors see if computer has paper
+  //otherwise loss  
+  if (userMove === computerMove){
+    return "tie";
+  }
+  if (userMove === "Rock"){
+    if (computerMove === "Scissors"){
+      return "player";
+    }else{
+      return "computer";
+    }
+  }
+  if (userMove === "Paper"){
+    if (computerMove === "Rock"){
+      return "player";
+    }else{
+      return "computer";
+    }
+  }
+  if (userMove === "Scissors"){
+    if (computerMove === "Paper"){
+      return "player";
+    }else{
+      return "computer"
+    }
+  }
+}

@@ -4,7 +4,6 @@ function getComputerChoice(){
   //get a random selection of "Rock", "Paper", or "Scissors"
   //random a number from 0-2 and put in array?
   let random = Math.floor(Math.random()*3);
-  console.log(`rng is ${random}, Move is ${MOVES[random]}`);
   return MOVES[random];
 }
 
@@ -54,3 +53,26 @@ function playRound(computerMove, userMove){
     }
   }
 }
+
+function game(){
+  //plays 5 rounds then show who won the most games.
+  let roundNum = 1;
+  let playerScore = 0;
+  let computerScore = 0;
+  let ties = 0;
+  while (roundNum<=5){
+    let result = playRound(getComputerChoice(), getPlayerSelection());
+    result === "tie" ? console.log("Tie") : console.log(`${result} Wins!`);    result === "player" ? playerScore++ : result === "computer" ?
+      computerScore++ : ties++;
+    roundNum++;
+  }
+  if (playerScore > computerScore){
+    console.log(`You Win! The score was Player:${playerScore} Computer:${computerScore} with ${ties} tie(s)`);
+  }else if (playerScore < computerScore){
+    console.log(`You Lost. The score was Computer:${computerScore} Player:${playerScore} with ${ties} tie(s)`);
+  }else{
+    console.log(`It was a Tie. The score was Player:${playerScore} Computer:${computerScore} with ${ties} tie(s)`);
+  }
+}
+
+game();

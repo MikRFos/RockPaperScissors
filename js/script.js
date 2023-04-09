@@ -8,4 +8,15 @@ function getComputerChoice(){
   return MOVES[random];
 }
 
-getComputerChoice();
+function getPlayerSelection(){
+  let legalSelection = false;
+  let userSelection;
+  while(!legalSelection){
+    userSelection = prompt('Please select your move. Legal Moves are "Rock", "Paper", or "Scissors".').toLowerCase();
+    userSelection = userSelection[0].toUpperCase() + userSelection.slice(1);
+    //check to see if userselection is a legal move
+    if (MOVES.includes(userSelection)) legalSelection = true;
+  }
+  return userSelection;
+}
+getPlayerSelection();

@@ -28,30 +28,30 @@ function playRound(computerMove, userMove){
   //if player has paper see if computer has rock
   //if player has scissors see if computer has paper
   //otherwise loss  
+  let roundWinner;
   if (userMove === computerMove){
-    return "tie";
-  }
-  if (userMove === "Rock"){
+    roundWinner = "tie";
+  }else if (userMove === "Rock"){
     if (computerMove === "Scissors"){
-      return "player";
+      roundWinner = "player";
     }else{
-      return "computer";
+      roundWinner = "computer";
     }
-  }
-  if (userMove === "Paper"){
+  }else if (userMove === "Paper"){
     if (computerMove === "Rock"){
-      return "player";
+      roundWinner = "player";
     }else{
-      return "computer";
+      roundWinner = "computer";
     }
-  }
-  if (userMove === "Scissors"){
+  }else if (userMove === "Scissors"){
     if (computerMove === "Paper"){
-      return "player";
+      roundWinner = "player";
     }else{
-      return "computer"
+      roundWinner = "computer"
     }
   }
+  roundWinner === "tie" ? console.log("Tie") : console.log(`${roundWinner} Wins!`);
+  return roundWinner;
 }
 
 function printResult(playerScore, computerScore, ties){
@@ -70,14 +70,13 @@ function game(){
   let playerScore = 0;
   let computerScore = 0;
   let ties = 0;
-  let result;
+  let roundResult;
   while (roundNum<=5){
-    result = playRound(getComputerChoice(), getPlayerSelection());
-    result === "tie" ? console.log("Tie") : console.log(`${result} Wins!`); 
-    result === "player" ? playerScore++ : result === "computer" ? computerScore++ : ties++;
+    roundResult = playRound(getComputerChoice(), getPlayerSelection()); 
+    roundResult === "player" ? playerScore++ : roundResult === "computer" ? computerScore++ : ties++;
     roundNum++;
   }
-  printResult(playerScore, computerScore), ties;
+  printResult(playerScore, computerScore, ties);
 }
 
 game();

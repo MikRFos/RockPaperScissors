@@ -6,16 +6,18 @@ const computerScoreDisplay = document.querySelector(
                              '#computer-score');
 const tieDisplay = document.querySelector('#ties');
 const roundDisplay = document.querySelector('#round-display');
+let scoreboard = document.querySelector('.scoreboard');
 let playerScore = 0;
 let computerScore = 0;
 let ties = 0;
 
 buttons.forEach((button) => {
   button.addEventListener('click', (e) => {
-    if (roundNum <= 5){
-      let playerMove = e.target.id
-      playRound(getComputerChoice(), playerMove);
+    if (roundNum > 5){
+      newGameStart();
     }
+    let playerMove = e.target.id
+    playRound(getComputerChoice(), playerMove);
   });
 });
 
@@ -62,13 +64,34 @@ function updateScoreboard(){
 }
 
 function gameEnd(){
-  let scoreboard = document.querySelector('.scoreboard');
-  console.log('games over');
   let winner = playerScore > computerScore ? "You Win!" :
     computerScore > playerScore ? "Computer Wins" : "It was a Tie";
   let finalScoreDisplay = document.createElement('h1');
   finalScoreDisplay.textContent = winner;
   scoreboard.appendChild(finalScoreDisplay);
+
+  let playAgain = document.createElement('p');
+  playAgain.textContent = "Make Another Move to Play Again";
+  scoreboard.appendChild(playAgain);
+}
+
+function newGameStart(){
+  playerScore = 0;
+  computerScore = 0;
+  ties = 0;
+  roundNum = 1;
+  removeRoundSummary();
+  updateScoreboard();
+  scoreboard.removeChild(scoreboard.lastChild);
+  scoreboard.removeChild(scoreboard.lastChild);
+  roundDisplay.textContent = `Round ${roundNum}`;
+
+}
+
+function removeRoundSummary(){
+  while(roundSummary.firstChild){
+    roundSummary.removeChild(roundSummary.firstChild);
+  }
 }
 
 function selectRoundWinner(player1, player2){

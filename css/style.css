@@ -1,5 +1,6 @@
 html{
   background-color: linen;
+  text-align: center;
 }
 
 h1{
@@ -10,12 +11,19 @@ h2{
   text-align: center;
   margin-bottom: 0;
 }
-h3{
+h3, h4{
   margin: 0;
   width: 150px;
   color: white;
   background-color: black;
-  text-align: center;
+  font-size: x-large;
+}
+
+h4{
+  height: 150px;
+  font-size: 48px;
+  padding-top: 50px;
+  margin-bottom: 50px;
 }
 
 .button-container{
@@ -34,6 +42,7 @@ button{
   flex-direction: column;
   margin:25px;
   border: 4px ridge gray;
+  
 }
 
 .labels-scoreboard{

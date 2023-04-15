@@ -1,22 +1,30 @@
-const MOVES = ["Rock", "Paper", "Scissors"];
+let roundNum = 1;
+const roundSummary = document.querySelector('#past-move');
+const buttons = document.querySelectorAll('.move');
+const playerScoreDisplay = document.querySelector('#player-score');
+const computerScoreDisplay = document.querySelector(
+                             '#computer-score');
+const tieDisplay = document.querySelector('#ties');
+const roundDisplay = document.querySelector('#round-display');
+let playerScore = 0;
+let computerScore = 0;
+let ties = 0;
+
+buttons.forEach((button) => {
+  button.addEventListener('click', (e) => {
+    if (roundNum <= 5){
+      let playerMove = e.target.id
+      playRound(getComputerChoice(), playerMove);
+    }
+  });
+});
 
 function getComputerChoice(){
   //get a random selection of "Rock", "Paper", or "Scissors"
   //random a number from 0-2 and put in array?
+  let moves = ["Rock", "Paper", "Scissors"];
   let random = Math.floor(Math.random()*3);
-  return MOVES[random];
-}
-
-function getPlayerSelection(){
-  let legalSelection = false;
-  let userSelection;
-  while(!legalSelection){
-    userSelection = prompt('Please select your move. Legal Moves are "Rock", "Paper", or "Scissors".').toLowerCase();
-    userSelection = userSelection[0].toUpperCase() + userSelection.slice(1);
-    //check to see if userselection is a legal move
-    if (MOVES.includes(userSelection)) legalSelection = true;
-  }
-  return userSelection;
+  return moves[random];
 }
 
 function playRound(computerMove, userMove){
@@ -28,55 +36,81 @@ function playRound(computerMove, userMove){
   //if player has paper see if computer has rock
   //if player has scissors see if computer has paper
   //otherwise loss  
-  let roundWinner;
-  if (userMove === computerMove){
-    roundWinner = "tie";
-  }else if (userMove === "Rock"){
-    if (computerMove === "Scissors"){
-      roundWinner = "player";
-    }else{
-      roundWinner = "computer";
-    }
-  }else if (userMove === "Paper"){
-    if (computerMove === "Rock"){
-      roundWinner = "player";
-    }else{
-      roundWinner = "computer";
-    }
-  }else if (userMove === "Scissors"){
-    if (computerMove === "Paper"){
-      roundWinner = "player";
-    }else{
-      roundWinner = "computer"
-    }
+  let winner = selectRoundWinner(computerMove, userMove);
+  createRoundSummary(winner, computerMove, userMove);
+  updateScoreboard();
+  roundNum++;
+  if (roundNum > 5){
+    gameEnd();
+    return;
   }
-  roundWinner === "tie" ? console.log("Tie") : console.log(`${roundWinner} Wins!`);
-  return roundWinner;
+  roundDisplay.textContent = `Round ${roundNum}`;
 }
 
-function printResult(playerScore, computerScore, ties){
-  if (playerScore > computerScore){
-    console.log(`You Win! The score was Player:${playerScore} Computer:${computerScore} with ${ties} tie(s)`);
-  }else if (playerScore < computerScore){
-    console.log(`You Lost. The score was Computer:${computerScore} Player:${playerScore} with ${ties} tie(s)`);
-  }else{
-    console.log(`It was a Tie. The score was Player:${playerScore} Computer:${computerScore} with ${ties} tie(s)`);
-  }
+function createRoundSummary(winner, computerMove, userMove){
+  let result = winner === "tie" ? "Round is a Tie" : `${winner} Wins the Round!`;
+  let summary = document.createElement('p');
+  summary.textContent = `Round ${roundNum}: Player played ${userMove} and
+  computer played ${computerMove}. The ${result}`;
+  roundSummary.appendChild(summary);
 }
 
-function game(){
-  //plays 5 rounds then show who won the most games.
-  let roundNum = 1;
-  let playerScore = 0;
-  let computerScore = 0;
-  let ties = 0;
-  let roundResult;
-  while (roundNum<=5){
-    roundResult = playRound(getComputerChoice(), getPlayerSelection()); 
-    roundResult === "player" ? playerScore++ : roundResult === "computer" ? computerScore++ : ties++;
-    roundNum++;
-  }
-  printResult(playerScore, computerScore, ties);
+function updateScoreboard(){
+  playerScoreDisplay.textContent = `${playerScore}`;
+  computerScoreDisplay.textContent = `${computerScore}`;
+  tieDisplay.textContent = `${ties}`;
 }
 
-game();
+function gameEnd(){
+  let scoreboard = document.querySelector('.scoreboard');
+  console.log('games over');
+  let winner = playerScore > computerScore ? "You Win!" :
+    computerScore > playerScore ? "Computer Wins" : "It was a Tie";
+  let finalScoreDisplay = document.createElement('h1');
+  finalScoreDisplay.textContent = winner;
+  scoreboard.appendChild(finalScoreDisplay);
+}
+
+function selectRoundWinner(player1, player2){
+  let winner;
+  if (player1 === player2){
+    winner = "tie";
+    ties++;
+  }else if (player1 === "Rock"){
+    if (player2 === "Scissors"){
+      winner = "player";
+      playerScore++;
+    }else{
+      winner = "computer";
+      computerScore++;
+    }
+  }else if (player1 === "Paper"){
+    if (player2 === "Rock"){
+      winner = "player";
+      playerScore++;
+    }else{
+      winner = "computer";
+      computerScore++;
+    }
+  }else if (player1 === "Scissors"){
+    if (player2 === "Paper"){
+      winner = "player";
+      playerScore++;
+    }else{
+      winner = "computer"
+      computerScore++;
+    }
+  }
+  return winner;
+}
+
+
+//game();
+
+//Game starts when user clicks a button
+//Get the player move from the button click
+//Select a random move for the computer
+//Compare the two to select the winner
+//Create Round Summary
+//Update the scoreboard 
+//Begin Next Round
